@@ -6,9 +6,9 @@ package client
 import "github.com/gorilla/websocket"
 
 type Client struct {
-	conn     *websocket.Conn
-	send     chan []byte
-	isSender bool
+	Conn     *websocket.Conn
+	Send     chan []byte
+	IsSender bool
 }
 
 type Message struct {

@@ -3,11 +3,10 @@ package session
 
 import (
 	"github.com/SaiSawant1/p2p/signaling/internal/client"
-	"github.com/gorilla/websocket"
 )
 
 type Session struct {
-	sender       *websocket.Conn
-	reciever     *websocket.Conn
-	messageQueue []client.Message
+	Sender       *client.Client
+	Reciever     *client.Client
+	MessageQueue []client.Message
 }
