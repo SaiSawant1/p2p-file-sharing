@@ -10,7 +10,7 @@ import {
 } from "./ui/card";
 
 export const InfoPannel = () => {
-  const { clientType } = useInfoStore((state) => state);
+  const { clientType, sessionId } = useInfoStore((state) => state);
   return (
     <div className="w-full px-96 mx-60">
       <Card>
@@ -24,7 +24,7 @@ export const InfoPannel = () => {
               Client Type: <p>{clientType}</p>
             </div>
             <div className="flex gap-2">
-              SessionId: <p>1</p>
+              SessionId: <p>{sessionId}</p>
             </div>
             <div className="flex gap-2">
               SDP: <p>info</p>

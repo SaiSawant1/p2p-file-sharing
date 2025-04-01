@@ -16,7 +16,10 @@ export const ClientTypeSelector = () => {
   };
   return (
     <div>
-      <Select onValueChange={(value: ClientType) => onClientSelect(value)}>
+      <Select
+        defaultValue="sender"
+        onValueChange={(value: ClientType) => onClientSelect(value)}
+      >
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Client Type" />
         </SelectTrigger>

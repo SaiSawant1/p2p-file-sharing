@@ -6,6 +6,7 @@ export type ClientType = "sender" | "receiver";
 
 type InfoState = {
   clientType: ClientType;
+  sessionId: string;
   sender_ice: string;
   sender_sdp: string;
 };
@@ -17,10 +18,16 @@ type InfoActions = {
 export type InfoStore = InfoState & InfoActions;
 
 export const initInfoStore = (): InfoState => {
-  return { clientType: "sender", sender_ice: "", sender_sdp: "" };
+  return {
+    sessionId: "",
+    clientType: "sender",
+    sender_ice: "",
+    sender_sdp: "",
+  };
 };
 
 export const defaultInitState: InfoState = {
+  sessionId: "",
   clientType: "sender",
   sender_sdp: "",
   sender_ice: "",

@@ -1,5 +1,6 @@
 "use client";
 
+import { Message } from "@/types";
 import { useEffect, useRef, useState } from "react";
 
 export const useWebSocket = () => {
@@ -27,9 +28,10 @@ export const useWebSocket = () => {
     };
   }, []); // Only run once when component mounts
 
-  const sendMessage = (msg: string) => {
+  const sendMessage = (msg: Message) => {
     if (ws.current && ws.current.readyState === WebSocket.OPEN) {
-      ws.current.send(msg);
+      const messageJson = JSON.stringify(msg);
+      ws.current.send(messageJson);
     } else {
       console.log("WebSocket is not open. Unable to send message.");
     }

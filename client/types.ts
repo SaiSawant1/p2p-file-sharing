@@ -1,4 +1,4 @@
-type MessageType =
+export type MessageType =
   | "CREATE_SESSION"
   | "SESSION_CREATED"
   | "JOIN_SESSION"
@@ -9,7 +9,7 @@ type MessageType =
 
 export interface Message {
   type: MessageType;
-  sessionId: string;
+  sessionId?: string;
   sdp?: string;
   candidate?: string;
 }
