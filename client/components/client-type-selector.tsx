@@ -1,3 +1,5 @@
+"use client";
+import { useInfoStore } from "@/lib/stores/info-store-provider";
 import {
   Select,
   SelectContent,
@@ -5,11 +7,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import { ClientType } from "@/lib/stores/infoStore";
 
 export const ClientTypeSelector = () => {
+  const { setClientType } = useInfoStore((state) => state);
+  const onClientSelect = (value: ClientType) => {
+    setClientType(value);
+  };
   return (
     <div>
-      <Select>
+      <Select onValueChange={(value: ClientType) => onClientSelect(value)}>
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Client Type" />
         </SelectTrigger>

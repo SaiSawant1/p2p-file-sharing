@@ -2,12 +2,12 @@
 
 import { createStore } from "zustand/vanilla";
 
-type ClientType = "sender" | "receiver";
+export type ClientType = "sender" | "receiver";
 
 type InfoState = {
   clientType: ClientType;
-  ice: string;
-  sdp: string;
+  sender_ice: string;
+  sender_sdp: string;
 };
 
 type InfoActions = {
@@ -16,10 +16,14 @@ type InfoActions = {
 
 export type InfoStore = InfoState & InfoActions;
 
+export const initInfoStore = (): InfoState => {
+  return { clientType: "sender", sender_ice: "", sender_sdp: "" };
+};
+
 export const defaultInitState: InfoState = {
   clientType: "sender",
-  sdp: "",
-  ice: "",
+  sender_sdp: "",
+  sender_ice: "",
 };
 
 export const createInfoStore = (initState: InfoState = defaultInitState) => {
