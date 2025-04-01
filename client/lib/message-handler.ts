@@ -1,3 +1,4 @@
+"use client";
 import { Message, MessageType } from "@/types";
 
 export const createMessage = (
@@ -28,5 +29,18 @@ export const createMessage = (
       sdp: sdp,
       candidate: candidate,
     };
+  }
+};
+
+export const consumeMessage = (msg: Message): { sessionId?: string } => {
+  if (msg.type === "SESSION_CREATED") {
+    if (msg.sessionId) {
+      return { sessionId: msg.sessionId };
+    } else {
+      console.log("NO Session Id Found.");
+      return { sessionId: "" };
+    }
+  } else {
+    return {};
   }
 };

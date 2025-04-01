@@ -2,7 +2,7 @@
 import { useWebSocket } from "@/hooks/websocket";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { createMessage } from "@/lib/message-creator";
+import { createMessage } from "@/lib/message-handler";
 
 export const TestComponent = () => {
   const { isConnected, sendMessage } = useWebSocket();

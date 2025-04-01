@@ -13,6 +13,7 @@ type InfoState = {
 
 type InfoActions = {
   setClientType: (client: ClientType) => void;
+  setSessionId: (sessionId: string) => void;
 };
 
 export type InfoStore = InfoState & InfoActions;
@@ -37,5 +38,6 @@ export const createInfoStore = (initState: InfoState = defaultInitState) => {
   return createStore<InfoStore>()((set) => ({
     ...initState,
     setClientType: (client: ClientType) => set(() => ({ clientType: client })),
+    setSessionId: (sessionId: string) => set(() => ({ sessionId: sessionId })),
   }));
 };
