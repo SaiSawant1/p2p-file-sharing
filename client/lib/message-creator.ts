@@ -1,6 +1,6 @@
 import { Message, MessageType } from "@/types";
 
-export const messageCreator = (
+export const createMessage = (
   msgType: MessageType,
   sessionId?: string,
   sdp?: string,
