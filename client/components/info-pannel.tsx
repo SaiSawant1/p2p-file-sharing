@@ -8,14 +8,20 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
+import { Badge } from "./ui/badge";
+import { useWebSocket } from "@/hooks/websocket";
 
 export const InfoPannel = () => {
   const { clientType, sessionId } = useInfoStore((state) => state);
+  const { isConnected } = useWebSocket();
   return (
     <div className="w-full px-96 mx-60">
       <Card>
         <CardHeader>
-          <CardTitle>Info Panel</CardTitle>
+          <CardTitle>
+            Info Panel{" "}
+            <Badge>{isConnected ? <p>live</p> : <p>disconnected</p>}</Badge>
+          </CardTitle>
           <CardDescription>Complete details about Client.</CardDescription>
         </CardHeader>
         <CardContent>

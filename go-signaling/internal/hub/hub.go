@@ -46,7 +46,7 @@ func ServerWs(w http.ResponseWriter, r *http.Request) {
 			log.Printf("Read Error,[ERROR]: %s \n", err)
 			break
 		}
-
+		log.Printf("%s", msg)
 		go hub.handleMessage(newClient, msg)
 
 	}
