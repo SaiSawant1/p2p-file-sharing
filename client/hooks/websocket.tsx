@@ -32,9 +32,9 @@ export const useWebSocket = () => {
     };
 
     return () => {
-      ws.current?.close(); // Cleanup on unmount
+      ws.current?.close();
     };
-  }, []); // Only run once when component mounts
+  }, [setSessionId]); // Only run once when component mounts
 
   const sendMessage = (msg: Message) => {
     if (ws.current && ws.current.readyState === WebSocket.OPEN) {
