@@ -10,6 +10,7 @@ import {
 } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { useWebSocket } from "@/hooks/websocket";
+import { JoinSessionForm } from "./join-session-form";
 
 export const InfoPannel = () => {
   const { clientType, sessionId } = useInfoStore((state) => state);
@@ -29,8 +30,11 @@ export const InfoPannel = () => {
             <div className="flex gap-2">
               Client Type: <p>{clientType}</p>
             </div>
-            <div className="flex gap-2">
-              SessionId: <p>{sessionId}</p>
+            <div className="flex gap-2 items-center">
+              SessionId:{" "}
+              {clientType === "sender"
+                ? <p>{sessionId}</p>
+                : <JoinSessionForm />}
             </div>
             <div className="flex gap-2">
               SDP: <p>info</p>

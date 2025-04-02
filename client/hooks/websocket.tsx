@@ -1,5 +1,7 @@
 "use client";
 
+import { consumeMessage } from "@/lib/message-handler";
+import { useInfoStore } from "@/lib/stores/info-store-provider";
 import { Message } from "@/types";
 import { useEffect, useRef, useState } from "react";
 
@@ -7,6 +9,7 @@ export const useWebSocket = () => {
   const [isConnected, setConnected] = useState(false);
   const [messages, setMessages] = useState<string[]>([]);
   const ws = useRef<WebSocket | null>(null); // Use useRef to persist WebSocket instance
+  const { setSessionId } = useInfoStore((state) => state);
 
   useEffect(() => {
     ws.current = new WebSocket("ws://localhost:8080/ws");
@@ -17,6 +20,11 @@ export const useWebSocket = () => {
 
     ws.current.onmessage = (event) => {
       setMessages((prevMessages) => [...prevMessages, event.data]); // Use functional update to avoid stale state
+      const msg = JSON.parse(event.data) as Message;
+      const { sessionId } = consumeMessage(msg);
+      if (sessionId) {
+        setSessionId(sessionId);
+      }
     };
 
     ws.current.onclose = () => {

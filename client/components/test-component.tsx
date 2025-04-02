@@ -10,7 +10,7 @@ export const TestComponent = () => {
     <>
       <div className="flex gap-4">
         <Input placeholder="text to send to server..." />
-        <Button onClick={() => sendMessage(createMessage("JOIN_SESSION"))}>
+        <Button onClick={() => sendMessage(createMessage("CREATE_SESSION"))}>
           send
         </Button>
         <div>
