@@ -33,6 +33,7 @@ export const createMessage = (
 };
 
 export const consumeMessage = (msg: Message): { sessionId?: string } => {
+  console.log(msg);
   if (msg.type === "SESSION_CREATED") {
     if (msg.sessionId) {
       return { sessionId: msg.sessionId };

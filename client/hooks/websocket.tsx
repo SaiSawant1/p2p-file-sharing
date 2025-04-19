@@ -10,12 +10,16 @@ export const useWebSocket = () => {
   const [messages, setMessages] = useState<string[]>([]);
   const ws = useRef<WebSocket | null>(null); // Use useRef to persist WebSocket instance
   const { setSessionId } = useInfoStore((state) => state);
-
+  const { clientType, sessionId } = useInfoStore((state) => state);
   useEffect(() => {
     ws.current = new WebSocket("ws://localhost:8080/ws");
 
     ws.current.onopen = () => {
       setConnected(true);
+
+      if (clientType == "sender" && !sessionId) {
+        sendMessage({ "type": "CREATE_SESSION" });
+      }
     };
 
     ws.current.onmessage = (event) => {
@@ -34,7 +38,7 @@ export const useWebSocket = () => {
     return () => {
       ws.current?.close();
     };
-  }, [setSessionId]); // Only run once when component mounts
+  }, [setSessionId, clientType, sessionId]); // Only run once when component mounts
 
   const sendMessage = (msg: Message) => {
     if (ws.current && ws.current.readyState === WebSocket.OPEN) {
