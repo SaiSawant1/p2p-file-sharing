@@ -4,29 +4,46 @@ import { consumeMessage } from "@/lib/message-handler";
 import { useInfoStore } from "@/lib/stores/info-store-provider";
 import { Message } from "@/types";
 import { useEffect, useRef, useState } from "react";
+import { useWebRTC } from "./webrtc";
 
 export const useWebSocket = () => {
   const [isConnected, setConnected] = useState(false);
   const [messages, setMessages] = useState<string[]>([]);
-  const ws = useRef<WebSocket | null>(null); // Use useRef to persist WebSocket instance
+  const ws = useRef<WebSocket | null>(null);
   const { setSessionId } = useInfoStore((state) => state);
   const { clientType, sessionId } = useInfoStore((state) => state);
+  const { handleOffer, handleAnswer, handleIceCandidate } = useWebRTC();
+
   useEffect(() => {
     ws.current = new WebSocket("ws://localhost:8080/ws");
 
     ws.current.onopen = () => {
       setConnected(true);
-      if (clientType == "sender" && !sessionId) {
-        sendMessage({ "type": "CREATE_SESSION" });
+      if (clientType === "sender" && !sessionId) {
+        sendMessage({ type: "CREATE_SESSION" });
       }
     };
 
     ws.current.onmessage = (event) => {
-      setMessages((prevMessages) => [...prevMessages, event.data]); // Use functional update to avoid stale state
+      setMessages((prevMessages) => [...prevMessages, event.data]);
       const msg = JSON.parse(event.data) as Message;
-      const { sessionId } = consumeMessage(msg);
+      const { sessionId, sdp, candidate } = consumeMessage(msg);
+
       if (sessionId) {
         setSessionId(sessionId);
+      }
+
+      // Handle WebRTC signaling messages
+      switch (msg.type) {
+        case "OFFER":
+          if (sdp) handleOffer(sdp);
+          break;
+        case "ANSWER":
+          if (sdp) handleAnswer(sdp);
+          break;
+        case "ICE_CANDIDATE":
+          if (candidate) handleIceCandidate(candidate);
+          break;
       }
     };
 
@@ -37,7 +54,14 @@ export const useWebSocket = () => {
     return () => {
       ws.current?.close();
     };
-  }, [setSessionId, clientType, sessionId]); // Only run once when component mounts
+  }, [
+    setSessionId,
+    clientType,
+    sessionId,
+    handleOffer,
+    handleAnswer,
+    handleIceCandidate,
+  ]);
 
   const sendMessage = (msg: Message) => {
     if (ws.current && ws.current.readyState === WebSocket.OPEN) {
