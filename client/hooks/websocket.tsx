@@ -16,7 +16,6 @@ export const useWebSocket = () => {
 
     ws.current.onopen = () => {
       setConnected(true);
-
       if (clientType == "sender" && !sessionId) {
         sendMessage({ "type": "CREATE_SESSION" });
       }

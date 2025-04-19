@@ -33,7 +33,6 @@ export const createMessage = (
 };
 
 export const consumeMessage = (msg: Message): { sessionId?: string } => {
-  console.log(msg);
   if (msg.type === "SESSION_CREATED") {
     if (msg.sessionId) {
       return { sessionId: msg.sessionId };
@@ -41,6 +40,8 @@ export const consumeMessage = (msg: Message): { sessionId?: string } => {
       console.log("NO Session Id Found.");
       return { sessionId: "" };
     }
+  } else if (msg.type === "PEER_CONNECTED") {
+    return { sessionId: msg.sessionId };
   } else {
     return {};
   }
