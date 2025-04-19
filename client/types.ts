@@ -1,15 +1,17 @@
-export type MessageType =
-  | "CREATE_SESSION"
-  | "SESSION_CREATED"
-  | "JOIN_SESSION"
-  | "PEER_CONNECTED"
-  | "OFFER"
-  | "ANSWER"
-  | "ICE_CANDIDATE";
+export const MessageType = {
+  CREATE_SESSION: "CREATE_SESSION",
+  JOIN_SESSION: "JOIN_SESSION",
+  SESSION_CREATED: "SESSION_CREATED",
+  PEER_CONNECTED: "PEER_CONNECTED",
+  OFFER: "OFFER",
+  ANSWER: "ANSWER",
+  ICE_CANDIDATE: "ICE_CANDIDATE",
+  ERROR: "ERROR",
+} as const;
 
-export interface Message {
-  type: MessageType;
+export type Message = {
+  type: keyof typeof MessageType;
   sessionId?: string;
   sdp?: string;
   candidate?: string;
-}
+};

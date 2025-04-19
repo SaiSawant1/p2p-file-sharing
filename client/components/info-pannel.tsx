@@ -10,10 +10,13 @@ import {
 } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { useWebSocket } from "@/hooks/websocket";
+import { useWebRTC } from "@/lib/contexts/webrtc-context";
 
 export const InfoPannel = () => {
   const { clientType, sessionId } = useInfoStore((state) => state);
   const { isConnected } = useWebSocket();
+  const { isConnected: isWebRTCConnected } = useWebRTC();
+
   return (
     <div className="w-full max-w-2xl mx-auto px-4">
       <Card className="shadow-lg">
@@ -44,12 +47,16 @@ export const InfoPannel = () => {
               <p className="text-sm font-medium text-muted-foreground">Connection Details</p>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">SDP Status</p>
-                  <p className="text-sm">Not available</p>
+                  <p className="text-sm text-muted-foreground">WebRTC Status</p>
+                  <Badge variant={isWebRTCConnected ? "default" : "destructive"} className="text-sm">
+                    {isWebRTCConnected ? "Connected" : "Disconnected"}
+                  </Badge>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">ICE Status</p>
-                  <p className="text-sm">Not available</p>
+                  <p className="text-sm text-muted-foreground">Signaling Status</p>
+                  <Badge variant={isConnected ? "default" : "destructive"} className="text-sm">
+                    {isConnected ? "Connected" : "Disconnected"}
+                  </Badge>
                 </div>
               </div>
             </div>

@@ -6,15 +6,19 @@ import { createMessage } from "@/lib/message-handler";
 import { useWebSocket } from "@/hooks/websocket";
 
 export const JoinSessionForm = () => {
-  const [sessionId, setSessionId] = useState<string | undefined>();
+  const [sessionId, setSessionId] = useState<string>("");
   const { sendMessage } = useWebSocket();
+
   const handleJoinSession = () => {
-    sendMessage(createMessage("JOIN_SESSION", sessionId));
+    if (sessionId.trim()) {
+      sendMessage(createMessage("JOIN_SESSION", sessionId));
+    }
   };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const session = e.target.value as string;
-    setSessionId(session);
+    setSessionId(e.target.value);
   };
+
   return (
     <div className="flex flex-col gap-4 w-full max-w-md">
       <div className="flex flex-col gap-2">
@@ -23,7 +27,8 @@ export const JoinSessionForm = () => {
           <Input
             id="sessionId"
             placeholder="Enter session ID"
-            onChange={(e) => handleChange(e)}
+            value={sessionId}
+            onChange={handleChange}
             className="flex-1"
           />
           <Button 

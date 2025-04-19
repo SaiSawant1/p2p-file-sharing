@@ -17,3 +17,14 @@ type Message struct {
 	SDP       string `json:"sdp,omitempty"`
 	Candidate string `json:"candidate,omitempty"`
 }
+
+const (
+	MessageTypeCreateSession   = "CREATE_SESSION"
+	MessageTypeJoinSession     = "JOIN_SESSION"
+	MessageTypeSessionCreated  = "SESSION_CREATED"
+	MessageTypePeerConnected   = "PEER_CONNECTED"
+	MessageTypeOffer          = "OFFER"
+	MessageTypeAnswer         = "ANSWER"
+	MessageTypeIceCandidate   = "ICE_CANDIDATE"
+	MessageTypeError          = "ERROR"
+)
