@@ -7,42 +7,48 @@ export const createMessage = (
   sdp?: string,
   candidate?: string,
 ): Message => {
-  if (msgType === "CREATE_SESSION") {
-    return {
-      type: "CREATE_SESSION",
-    } as Message;
-  } else if (msgType === "JOIN_SESSION") {
-    return {
-      type: "JOIN_SESSION",
-      sessionId: sessionId,
-    } as Message;
-  } else if (msgType === "OFFER") {
-    return {
-      type: "OFFER",
-      sessionId: sessionId,
-      sdp: sdp,
-    };
-  } else {
-    return {
-      type: "ICE_CANDIDATE",
-      sessionId: sessionId,
-      sdp: sdp,
-      candidate: candidate,
-    };
+  switch (msgType) {
+    case "CREATE_SESSION":
+      return { type: "CREATE_SESSION" };
+    case "JOIN_SESSION":
+      return { type: "JOIN_SESSION", sessionId };
+    case "OFFER":
+      return { type: "OFFER", sessionId, sdp };
+    case "ANSWER":
+      return { type: "ANSWER", sessionId, sdp };
+    case "ICE_CANDIDATE":
+      return { type: "ICE_CANDIDATE", sessionId, sdp, candidate };
+    default:
+      throw new Error(`Unknown message type: ${msgType}`);
   }
 };
 
-export const consumeMessage = (msg: Message): { sessionId?: string } => {
-  if (msg.type === "SESSION_CREATED") {
-    if (msg.sessionId) {
+export const consumeMessage = (msg: Message): {
+  sessionId?: string;
+  sdp?: RTCSessionDescriptionInit;
+  candidate?: RTCIceCandidateInit;
+} => {
+  switch (msg.type) {
+    case "SESSION_CREATED":
       return { sessionId: msg.sessionId };
-    } else {
-      console.log("NO Session Id Found.");
-      return { sessionId: "" };
-    }
-  } else if (msg.type === "PEER_CONNECTED") {
-    return { sessionId: msg.sessionId };
-  } else {
-    return {};
+    case "PEER_CONNECTED":
+      return { sessionId: msg.sessionId };
+    case "OFFER":
+      return {
+        sessionId: msg.sessionId,
+        sdp: msg.sdp ? JSON.parse(msg.sdp) : undefined,
+      };
+    case "ANSWER":
+      return {
+        sessionId: msg.sessionId,
+        sdp: msg.sdp ? JSON.parse(msg.sdp) : undefined,
+      };
+    case "ICE_CANDIDATE":
+      return {
+        sessionId: msg.sessionId,
+        candidate: msg.candidate ? JSON.parse(msg.candidate) : undefined,
+      };
+    default:
+      return {};
   }
 };
